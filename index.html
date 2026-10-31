@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f7f7">
+  <meta name="description" content="日々のコンディション記録と、観測結果の分析レポートへアクセスするためのホームページ。">
+  <title>コンディション観測 | 記録とレポート</title>
+  <style>
+    :root{
+      color-scheme:light;
+      --ink:#173747;--sub:#607582;--line:#dce6e9;--bg:#f3f7f7;
+      --teal:#117c83;--teal-dark:#14616b;--teal-pale:#e7f5f2;
+      --paper:#fffdfa;--orange:#ba8758;--shadow:0 24px 58px rgba(32,69,76,.075);
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;min-height:100svh;color:var(--ink);
+      font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",sans-serif;
+      background:
+        radial-gradient(ellipse 520px 400px at 4% 1%,rgba(109,184,175,.10),transparent 77%),
+        radial-gradient(ellipse 430px 430px at 97% 99%,rgba(201,170,127,.12),transparent 77%),
+        var(--bg);
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:inherit;text-decoration:none}
+    .shell{width:min(1120px,calc(100% - 72px));margin:0 auto;padding:38px 0 50px}
+    .topline{display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:13px}
+    .mark{
+      width:47px;height:47px;display:grid;place-items:center;border-radius:15px;
+      color:#d9fbf3;background:#174454;box-shadow:0 7px 18px rgba(19,59,73,.13)
+    }
+    .brand small{display:block;font-size:10px;font-weight:800;letter-spacing:.16em;color:#57818a;line-height:1.55}
+    .brand strong{display:block;font-size:17px;letter-spacing:.04em;font-weight:850;line-height:1.6}
+    .top-caption{display:flex;align-items:center;gap:10px;font-size:12px;color:#6b828a;font-weight:650;letter-spacing:.035em}
+    .top-caption::before{content:"";width:26px;height:1px;background:#aebfc4}
+    .hero{display:flex;align-items:end;justify-content:space-between;gap:48px;padding:73px 0 37px}
+    .eyebrow{display:flex;align-items:center;gap:11px;font-size:11px;font-weight:850;letter-spacing:.15em;color:#23888c}
+    .eyebrow::before{content:"";height:2px;width:29px;background:#2a9ca0;border-radius:3px}
+    h1{font-size:clamp(34px,4.5vw,57px);letter-spacing:-.058em;line-height:1.28;font-weight:850;margin:17px 0 0}
+    h1 .accent{color:#187a80}
+    .hero-text{max-width:325px;font-size:15px;line-height:2;color:#5b707d;padding-bottom:5px;margin:0}
+    .destinations{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .destination{
+      position:relative;isolation:isolate;display:flex;flex-direction:column;min-width:0;
+      border:1px solid #dce5e7;border-radius:25px;overflow:hidden;
+      min-height:457px;padding:31px 33px 29px;background:#fff;
+      box-shadow:var(--shadow);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+    }
+    .destination::before{content:"";position:absolute;z-index:-1;inset:0 0 auto;height:5px;background:var(--teal)}
+    .destination:hover,.destination:focus-visible{
+      transform:translateY(-5px);border-color:#a7cac8;box-shadow:0 28px 62px rgba(32,69,76,.13)
+    }
+    .destination:focus-visible{outline:3px solid #42aab1;outline-offset:4px}
+    .destination.report{background:var(--paper);border-color:#e9e1d6}
+    .destination.report::before{background:var(--orange)}
+    .destination.report:hover,.destination.report:focus-visible{border-color:#d9bea0}
+    .card-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .number-label{font-size:11px;color:#718995;font-weight:900;letter-spacing:.16em}
+    .icon-wrap{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;color:#137c82;background:#e5f4f1}
+    .report .icon-wrap{background:#f8eee2;color:#a97843}
+    .destination h2{font-size:clamp(24px,2.7vw,31px);letter-spacing:-.05em;line-height:1.4;margin:18px 0 9px}
+    .card-description{font-size:14px;color:#5e7480;line-height:1.9;max-width:350px;margin:0;min-height:53px}
+    .mini{
+      position:relative;display:flex;flex-direction:column;justify-content:center;
+      height:151px;margin:24px 0 17px;border-radius:16px;overflow:hidden;
+      background:linear-gradient(140deg,#eff9f7,#f8fbfb);border:1px solid #e1eeec;
+    }
+    .mini-label{font-size:10px;font-weight:800;letter-spacing:.11em;color:#729095;margin:0 0 13px}
+    .input-mini{padding:19px 20px}
+    .input-mini::after{
+      content:"";position:absolute;right:-16px;top:-42px;width:120px;height:120px;border:1px solid #d6ece8;border-radius:50%
+    }
+    .scale{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px;position:relative;z-index:1}
+    .scale span{
+      display:grid;place-items:center;min-width:0;aspect-ratio:1;font-size:12px;font-weight:800;
+      border-radius:7px;color:#347982;border:1px solid #cbe5e0;background:#fff
+    }
+    .mini-small{font-size:10px;color:#77919b;margin-top:12px}
+    .report-mini{background:linear-gradient(125deg,#fcf6ed,#fcfbf8);border-color:#eee1d1;padding:14px 24px}
+    .paper-peek{
+      background:#fff;border:1px solid #ebded0;border-radius:8px 8px 0 0;
+      padding:14px 16px 0;height:141px;box-shadow:0 7px 12px rgba(83,64,48,.06);
+      display:grid;grid-template-columns:1fr .95fr;gap:12px;overflow:hidden;
+      transform:translateY(5px)
+    }
+    .paper-lines{min-width:0}
+    .paper-heading{height:7px;width:75%;border-radius:2px;background:#4d6f7c;margin:2px 0 12px}
+    .paper-rule{height:4px;width:100%;border-radius:2px;background:#d7dfe0;margin:9px 0}
+    .paper-rule.short{width:72%}
+    .paper-rule.mid{width:88%}
+    .paper-chip{width:47%;height:20px;background:#ecf5f2;border-left:3px solid #6aa89e;margin-top:15px}
+    .chart{display:block;width:100%;height:105px;align-self:end}
+    .meta{font-size:11px;color:#8a7770}
+    .tile-bottom{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-top:auto}
+    .tile-note{font-size:11px;line-height:1.7;color:#768992;max-width:275px}
+    .action{display:inline-flex;align-items:center;gap:11px;flex:none;font-size:14px;font-weight:850;letter-spacing:.005em;color:#146b74}
+    .report .action{color:#95673d}
+    .arrow{
+      width:39px;height:39px;border-radius:50%;display:grid;place-items:center;
+      background:#e5f4f1;transition:transform .2s ease,background .2s ease
+    }
+    .report .arrow{background:#f5ecdf}
+    .destination:hover .arrow,.destination:focus-visible .arrow{transform:translateX(3px)}
+    .bottom-line{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:26px 4px 0}
+    .bottom-line p{font-size:12px;line-height:1.7;color:#7b8e97;margin:0}
+    .bottom-line .dots{display:flex;gap:6px;align-items:center}
+    .bottom-line .dots i{width:6px;height:6px;border-radius:50%;display:block;background:#b4cacb}
+    .bottom-line .dots i:first-child{background:#328f92}
+    @media(max-width:900px){
+      .hero{padding:57px 0 32px;align-items:start;flex-direction:column;gap:16px}
+      .hero-text{max-width:650px}
+      .destination{padding:27px 26px;min-height:441px}
+      .scale{gap:3px}
+      .scale span{font-size:11px;border-radius:5px}
+    }
+    @media(max-width:740px){
+      .destinations{grid-template-columns:1fr;gap:18px}
+      .destination{min-height:0}
+      .mini{margin-top:20px}
+      .top-caption{display:none}
+      .shell{width:min(600px,calc(100% - 38px));padding:24px 0 35px}
+      .hero{padding:50px 0 29px}
+      .bottom-line{padding-top:22px}
+    }
+    @media(max-width:460px){
+      .hero{padding-top:42px}
+      h1{font-size:35px}
+      .destination{padding:23px 22px 22px;border-radius:20px}
+      .destination h2{font-size:26px}
+      .card-description{font-size:13px;min-height:0}
+      .mini{height:138px}
+      .input-mini{padding:15px}
+      .scale{gap:3px}
+      .scale span{font-size:11px}
+      .tile-bottom{align-items:center}
+      .tile-note{font-size:10px;max-width:180px}
+      .action{gap:6px;font-size:12px}
+      .arrow{width:34px;height:34px}
+      .bottom-line .dots{display:none}
+    }
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      *,*::before,*::after{transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="topline">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="2.6" y="2.6" width="20.8" height="20.8" rx="7" stroke="currentColor" stroke-width="1.3" opacity=".65"/>
+            <path d="M5.5 15.5h4l2.3-6.5 3.1 9 2.3-5.2h3.3" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div><small>CONDITION MONITORING</small><strong>コンディション観測</strong></div>
+      </div>
+      <div class="top-caption">記録と分析の入口</div>
+    </div>
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <div class="eyebrow">DAILY RECORD &amp; REVIEW</div>
+        <h1 id="page-title">記録する。<br><span class="accent">振り返る。</span></h1>
+      </div>
+      <p class="hero-text">日々の状態を記録し、蓄積した変化をレポートで確認する。<br>目的に合わせて、下の2つから選んでください。</p>
+    </section>
+    <div class="destinations" aria-label="利用する画面を選択">
+      <a class="destination input" href="./input_app/Index.html" aria-label="日々の記録 入力画面を開く">
+        <div class="card-top">
+          <span class="number-label">01 / RECORD</span>
+          <span class="icon-wrap" aria-hidden="true">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3.5" width="14" height="17" rx="2.5"/><path d="M8.5 8h7M8.5 12h4M8.5 16h6"/><path d="m15 15 1.5 1.5 2-2"/></svg>
+          </span>
+        </div>
+        <h2>コンディションを記録</h2>
+        <p class="card-description">その日の気分や疲労、睡眠などを、1〜10の数字から選んで記録する。</p>
+        <div class="mini input-mini" aria-hidden="true">
+          <p class="mini-label">SELECT YOUR CONDITION</p>
+          <div class="scale"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+          <div class="mini-small">数字を選んで記録</div>
+        </div>
+        <div class="tile-bottom">
+          <span class="tile-note">GitHub Pages版はプレビューです。<br>Googleドライブへの保存はできません。</span>
+          <span class="action">記録画面へ <span class="arrow" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+          </span></span>
+        </div>
+      </a>
+      <a class="destination report" href="./report/" aria-label="分析レポートを開く">
+        <div class="card-top">
+          <span class="number-label">02 / REPORT</span>
+          <span class="icon-wrap" aria-hidden="true">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4V20H7a2 2 0 0 1-2-2V5.5a2 2 0 0 1 2-2Z"/><path d="M14 3.5v4h4M8.5 16l2.5-3 2 1.5 3-4"/></svg>
+          </span>
+        </div>
+        <h2>分析レポートを見る</h2>
+        <p class="card-description">観測データの推移や月別の傾向、分析・考察を、1枚の報告書として確認する。</p>
+        <div class="mini report-mini" aria-hidden="true">
+          <div class="paper-peek">
+            <div class="paper-lines">
+              <div class="paper-heading"></div>
+              <div class="paper-rule"></div>
+              <div class="paper-rule mid"></div>
+              <div class="paper-rule short"></div>
+              <div class="paper-chip"></div>
+            </div>
+            <svg class="chart" viewBox="0 0 160 95" fill="none" preserveAspectRatio="xMidYMid meet">
+              <path d="M0 15H160M0 36H160M0 57H160M0 78H160" stroke="#e9e6e0" stroke-width="1"/>
+              <path d="M2 73L24 61L46 68L68 44L90 52L112 27L136 39L158 16" stroke="#337f83" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 35L24 43L46 37L68 51L90 45L112 57L136 49L158 42" stroke="#c18a5b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="158" cy="16" r="3.2" fill="#337f83"/>
+            </svg>
+          </div>
+        </div>
+        <div class="tile-bottom">
+          <span class="tile-note">推移グラフ・月別比較・総括などを収録。</span>
+          <span class="action">レポートへ <span class="arrow" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+          </span></span>
+        </div>
+      </a>
+    </div>
+    <div class="bottom-line" aria-hidden="true">
+      <p>CONDITION MONITORING &nbsp; / &nbsp; RECORD · REVIEW</p>
+      <div class="dots"><i></i><i></i><i></i></div>
+    </div>
+  </main>
+</body>
+</html>
