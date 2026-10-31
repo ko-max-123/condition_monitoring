@@ -42,7 +42,7 @@
     h1{font-size:clamp(34px,4.5vw,57px);letter-spacing:-.058em;line-height:1.28;font-weight:850;margin:17px 0 0}
     h1 .accent{color:#187a80}
     .hero-text{max-width:325px;font-size:15px;line-height:2;color:#5b707d;padding-bottom:5px;margin:0}
-    .destinations{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .destinations{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
     .destination{
       position:relative;isolation:isolate;display:flex;flex-direction:column;min-width:0;
       border:1px solid #dce5e7;border-radius:25px;overflow:hidden;
@@ -117,7 +117,7 @@
       .scale span{font-size:11px;border-radius:5px}
     }
     @media(max-width:740px){
-      .destinations{grid-template-columns:1fr;gap:18px}
+      .destinations{grid-template-columns:1fr;gap:18px;margin-top:28px}
       .destination{min-height:0}
       .mini{margin-top:20px}
       .top-caption{display:none}
@@ -161,13 +161,6 @@
       </div>
       <div class="top-caption">記録と分析の入口</div>
     </div>
-    <section class="hero" aria-labelledby="page-title">
-      <div>
-        <div class="eyebrow">DAILY RECORD &amp; REVIEW</div>
-        <h1 id="page-title">記録する。<br><span class="accent">振り返る。</span></h1>
-      </div>
-      <p class="hero-text">日々の状態を記録し、蓄積した変化をレポートで確認する。<br>目的に合わせて、下の2つから選んでください。</p>
-    </section>
     <div class="destinations" aria-label="利用する画面を選択">
       <a class="destination input" href="./input_app/Index.html" aria-label="日々の記録 入力画面を開く">
         <div class="card-top">
